@@ -42,7 +42,7 @@ namespace v2
 
                 catch (SecurityException ex)
                 {
-                    MessageBox.Show($"Secutiry error. \n\n Error message: {ex.Message} \n\n" + $"Details: \n\n{ex.StackTrace}");
+                    MessageBox.Show($"Security error. \n\n Error message: {ex.Message} \n\n" + $"Details: \n\n{ex.StackTrace}");
                 }
 
                   
