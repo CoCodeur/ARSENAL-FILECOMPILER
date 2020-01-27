@@ -1,0 +1,9 @@
+D:\ARSENAL\v2\bin\Debug\v2.exe.config
+D:\ARSENAL\v2\bin\Debug\v2.exe
+D:\ARSENAL\v2\bin\Debug\v2.pdb
+D:\ARSENAL\v2\obj\Debug\v2.csprojAssemblyReference.cache
+D:\ARSENAL\v2\obj\Debug\v2.Form1.resources
+D:\ARSENAL\v2\obj\Debug\v2.Properties.Resources.resources
+D:\ARSENAL\v2\obj\Debug\v2.csproj.GenerateResource.cache
+D:\ARSENAL\v2\obj\Debug\v2.exe
+D:\ARSENAL\v2\obj\Debug\v2.pdb
