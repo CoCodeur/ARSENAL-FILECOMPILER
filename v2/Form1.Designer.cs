@@ -54,16 +54,7 @@ namespace v2
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(313, 20);
             this.textBox1.TabIndex = 1;
-            // 
-            // validateButton
-            // 
-            this.validateButton.Location = new System.Drawing.Point(344, 322);
-            this.validateButton.Name = "validateButton";
-            this.validateButton.Size = new System.Drawing.Size(75, 23);
-            this.validateButton.TabIndex = 2;
-            this.validateButton.Text = "Valider";
-            this.validateButton.UseVisualStyleBackColor = true;
-            this.validateButton.Click += new System.EventHandler(this.button2_Click);
+   
             // 
             // Form1
             // 

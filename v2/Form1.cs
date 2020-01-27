@@ -22,7 +22,7 @@ namespace v2
         private void button1_Click(object sender, EventArgs e)
         {
 
-            //Dialog 
+            //Dialog
 
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Filter = "XML Files (*.xml)|*.xml";
@@ -37,7 +37,7 @@ namespace v2
                 try
                 {
                     var file = new StreamReader(dialog.FileName);
-                    
+
                 }
 
                 catch (SecurityException ex)
@@ -45,6 +45,9 @@ namespace v2
                     MessageBox.Show($"Secutiry error. \n\n Error message: {ex.Message} \n\n" + $"Details: \n\n{ex.StackTrace}");
                 }
 
+                  
+
+                  }
                 if (!string.Equals(Path.GetExtension(dialog.FileName),
                         ".xml",
                         System.StringComparison.OrdinalIgnoreCase
@@ -56,24 +59,21 @@ namespace v2
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
 
+                //TODO LOL 
+
 
                 }
-
-            }
             else { }
-
+        }
             
-
-        }
-
-        private void SetText(string text)
+private void SetText(string fileName)
         {
-            textBox1.Text = text;
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
+            textBox1.Text = fileName;
         }
     }
-}
+
+     
+
+     
+    }
+
