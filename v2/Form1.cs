@@ -20,10 +20,10 @@ namespace v2
         {
             InitializeComponent();
 
-          
+
         }
 
-        
+
         private void createFolder_Click(object sender, EventArgs e)
         {
 
@@ -32,7 +32,7 @@ namespace v2
             if (!Directory.Exists(pathOfFolder))
             {
                 Directory.CreateDirectory(pathOfFolder);
-            }  
+            }
 
             else
             {
@@ -62,29 +62,29 @@ namespace v2
 
                 SetText(dialog.FileName, textBox1);
 
-                
+
 
 
                 getId(dialog.FileName);
 
-                  
-
-                  }
-                if (!string.Equals(Path.GetExtension(dialog.FileName),
-                        ".xml",
-                        System.StringComparison.OrdinalIgnoreCase
-                    ))
-                {
-
-                    MessageBox.Show("The type of the selected file is not supported by this application. You must select an XML file.",
-                        "Invalid File Type",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
-
-             
 
 
-                }
+            }
+            if (!string.Equals(Path.GetExtension(dialog.FileName),
+                    ".xml",
+                    System.StringComparison.OrdinalIgnoreCase
+                ))
+            {
+
+                MessageBox.Show("The type of the selected file is not supported by this application. You must select an XML file.",
+                    "Invalid File Type",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+
+
+
+            }
             else { }
         }
 
@@ -102,7 +102,7 @@ namespace v2
 
 
             FolderBrowserDialog browserDialog = new FolderBrowserDialog();
-            
+
 
             if (Directory.Exists(@"c:\FileCompiler"))
             {
@@ -114,10 +114,10 @@ namespace v2
             {
 
                 browserDialog.ShowDialog();
-                
+
 
             }
-           
+
 
 
             SetText(browserDialog.SelectedPath, PathTxt);
@@ -139,28 +139,28 @@ namespace v2
         //Method for get ID of the command
         private dynamic getId(string filename)
         {
-           var str = XMLExplorer(filename);
+            var str = XMLExplorer(filename);
             var id = str.FirstAttribute;
 
             string parentFileName = id.ToString();
             parentFileName = CleanerID(parentFileName);
 
             return parentFileName;
-          
 
 
-           
+
+
         }
 
         //Method for clean the current ID
 
         private string CleanerID(string parentFileName)
         {
-               String CleanStr = parentFileName.Remove(0, 4);
+            String CleanStr = parentFileName.Remove(0, 4);
 
-               CleanStr = CleanStr.Remove(CleanStr.Length - 1, 1);
+            CleanStr = CleanStr.Remove(CleanStr.Length - 1, 1);
 
-               return CleanStr;
+            return CleanStr;
         }
 
         //Method for Search XML File and extract in String 
@@ -174,67 +174,98 @@ namespace v2
 
         private void TreeCreatorXML(string fileName)
         {
-
+            //recuperation du XML et de Son ID 
             XElement fileXML = XMLExplorer(fileName);
-           string idRacineFolder = getId(fileName);
+            string idRacineFolder = getId(fileName);
 
-            if(idRacineFolder != null)
-            {
+            
 
-                string pathToCreate = PathTxt.Text + "/" + idRacineFolder;
-                Directory.CreateDirectory(pathToCreate);
-
-                if (Directory.Exists(pathToCreate))
+                //verification si son ID est null ou pas 
+                if (idRacineFolder != null)
                 {
+                    
+                    //Creation du dossier avec l'id de commande
+                    string pathToCreate = PathTxt.Text + "/" + idRacineFolder;
+                    Directory.CreateDirectory(pathToCreate);
 
-                  List<XElement> xElements = fileXML.Descendants("produit")
-                        .Elements("matiere").ToList();
-
-                    foreach (XElement element in xElements)
+                    //verification si il existe bien un Dossier avec l'ID
+                    if (Directory.Exists(pathToCreate))
                     {
-                        string matiere = element.Value.ToString();
-                        string matierePath = pathToCreate + "/" + matiere;
+
+                        //Creation d'une Liste avec les matieres des produits du XML 
+                        List<XElement> xElements = fileXML.Descendants("produit")
+                              .Elements("matiere").ToList();
 
 
-                        if (!Directory.Exists(matierePath))
+                           //Pour toutes les matieres trouvés
+                        foreach (XElement element in xElements)
                         {
-
-                            Directory.CreateDirectory(matierePath);
-
                             
+                        //Parse de la matiere de XElement en String 
+                            string matiere = element.Value.ToString();
+                        //Creation du Path Associé 
+                            string matierePath = pathToCreate + "/" + matiere;
 
+                        //Verification si le dossier existe deja 
+                            if (!Directory.Exists(matierePath))
+                            {
+                                
+                                //creation du dossier matiere correspondant
+                                Directory.CreateDirectory(matierePath);
+
+
+
+
+
+                            }
+                            else {
+
+                            MessageBox.Show("The type of the selected file is not supported by this application. You must select an XML file.",
+                   "Invalid File Type",
+                   MessageBoxButtons.OK,
+                   MessageBoxIcon.Error);
+
+                        }
 
 
                         }
-                        else {}
-                       
 
                     }
 
+                    else
+                    {
+
+                    MessageBox.Show("The type of the selected file is not supported by this application. You must select an XML file.",
+                   "Invalid File Type",
+                   MessageBoxButtons.OK,
+                   MessageBoxIcon.Error);
+
                 }
 
-                else
-                {
 
-           
+
 
                 }
 
+                else {
 
+                MessageBox.Show("The type of the selected file is not supported by this application. You must select an XML file.",
+                       "Invalid File Type",
+                       MessageBoxButtons.OK,
+                       MessageBoxIcon.Error);
+            }
 
 
             }
 
-            else{}
+          
 
 
         }
 
-        
+
+
+
     }
 
-     
-
-     
-    }
 
