@@ -34,7 +34,7 @@ namespace v2
             if (dialog.ShowDialog() == DialogResult.OK)
             {
 
-                SetText(dialog.FileName);
+                SetText(dialog.FileName, textBox1);
                 XmlCopileur(dialog.FileName);
 
                   
@@ -57,10 +57,21 @@ namespace v2
                 }
             else { }
         }
-            
-            private void SetText(string fileName)
+
+
+        private void button2_Click(object sender, EventArgs e)
         {
-            textBox1.Text = fileName;
+
+            OpenFileDialog pathDialog = new OpenFileDialog();
+            SetText(pathDialog.FileName, PathTxt);
+            
+
+        }
+
+
+        private void SetText(string fileName, TextBox textBox)
+        {
+            textBox.Text = fileName;
         }
 
 
@@ -71,11 +82,22 @@ namespace v2
             var str = XElement.Parse(xmlStr);
             var id = str.FirstAttribute;
 
-            
+            string paretnFileName = id.ToString();
 
-
+            SetText(CleanerID(paretnFileName),PathTxt);
         }
 
+
+        private string CleanerID(string parentFileName)
+        {
+               String CleanStr = parentFileName.Remove(0, 4);
+
+               CleanStr = CleanStr.Remove(CleanStr.Length - 1, 1);
+
+               return CleanStr;
+        }
+
+       
     }
 
      

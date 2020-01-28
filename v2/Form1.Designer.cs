@@ -33,15 +33,16 @@ namespace v2
         {
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.validateButton = new System.Windows.Forms.Button();
+            this.PathButon = new System.Windows.Forms.Button();
+            this.PathTxt = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Verdana", 8.25F);
-            this.button1.Location = new System.Drawing.Point(227, 197);
+            this.button1.Location = new System.Drawing.Point(22, 51);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(313, 50);
+            this.button1.Size = new System.Drawing.Size(218, 50);
             this.button1.TabIndex = 0;
             this.button1.Text = "Veuillez choisir votre ficher XML";
             this.button1.UseVisualStyleBackColor = true;
@@ -49,19 +50,37 @@ namespace v2
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(227, 270);
+            this.textBox1.Location = new System.Drawing.Point(22, 130);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(313, 20);
+            this.textBox1.Size = new System.Drawing.Size(218, 20);
             this.textBox1.TabIndex = 1;
-   
+            // 
+            // PathButon
+            // 
+            this.PathButon.Location = new System.Drawing.Point(419, 51);
+            this.PathButon.Name = "PathButon";
+            this.PathButon.Size = new System.Drawing.Size(222, 50);
+            this.PathButon.TabIndex = 2;
+            this.PathButon.Text = "Veuillez Choisir L\'emplacement cible";
+            this.PathButon.UseVisualStyleBackColor = true;
+            this.PathButon.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // PathTxt
+            // 
+            this.PathTxt.Location = new System.Drawing.Point(419, 129);
+            this.PathTxt.Name = "PathTxt";
+            this.PathTxt.ReadOnly = true;
+            this.PathTxt.Size = new System.Drawing.Size(222, 20);
+            this.PathTxt.TabIndex = 3;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 478);
-            this.Controls.Add(this.validateButton);
+            this.Controls.Add(this.PathTxt);
+            this.Controls.Add(this.PathButon);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button1);
             this.Name = "Form1";
@@ -85,7 +104,8 @@ namespace v2
 
         private Button button1;
         private TextBox textBox1;
-        private Button validateButton;
+        private Button PathButon;
+        private TextBox PathTxt;
     }
 }
 
