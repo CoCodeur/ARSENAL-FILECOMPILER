@@ -9,6 +9,8 @@ using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace v2
 {
@@ -33,17 +35,7 @@ namespace v2
             {
 
                 SetText(dialog.FileName);
-
-                try
-                {
-                    var file = new StreamReader(dialog.FileName);
-
-                }
-
-                catch (SecurityException ex)
-                {
-                    MessageBox.Show($"Security error. \n\n Error message: {ex.Message} \n\n" + $"Details: \n\n{ex.StackTrace}");
-                }
+                XmlCopileur(dialog.FileName);
 
                   
 
@@ -66,10 +58,24 @@ namespace v2
             else { }
         }
             
-private void SetText(string fileName)
+            private void SetText(string fileName)
         {
             textBox1.Text = fileName;
         }
+
+
+        private void XmlCopileur(string filename)
+        {
+            var xmlStr = File.ReadAllText(filename);
+
+            var str = XElement.Parse(xmlStr);
+            var id = str.FirstAttribute;
+
+            
+
+
+        }
+
     }
 
      
