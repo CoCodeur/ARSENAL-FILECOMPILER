@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
+using Utilities.Network;
 
 namespace v2
 {
@@ -172,11 +173,32 @@ namespace v2
             return xmlStr;
         }
 
+        private List<string> SearchTag(string tagName, string fileName)
+        {
+            XElement fileXML = XMLExplorer(fileName);
+            List<XElement> elementBalise = fileXML.Descendants("produit")
+                .Elements(tagName).ToList();
+
+            List<string> elementBaliseStr = new List<string> { };
+
+            foreach(XElement element in elementBalise)
+            {
+                elementBaliseStr.Add(element.Value.ToString());
+                
+
+            }
+
+            return elementBaliseStr;
+
+        }
+
+
         private void TreeCreatorXML(string fileName)
         {
             //recuperation du XML et de Son ID 
             XElement fileXML = XMLExplorer(fileName);
             string idRacineFolder = getId(fileName);
+           
 
             
 
@@ -192,19 +214,16 @@ namespace v2
                     if (Directory.Exists(pathToCreate))
                     {
 
-                        //Creation d'une Liste avec les matieres des produits du XML 
-                        List<XElement> xElements = fileXML.Descendants("produit")
-                              .Elements("matiere").ToList();
+                        List<string> matiere = SearchTag("matiere", fileName);
+
+                    
+                        foreach(string matiereInList in matiere)
+                    {
+
+                        string matierePath = pathToCreate + "/" + matiereInList;
+                    
 
 
-                           //Pour toutes les matieres trouvés
-                        foreach (XElement element in xElements)
-                        {
-                            
-                        //Parse de la matiere de XElement en String 
-                            string matiere = element.Value.ToString();
-                        //Creation du Path Associé 
-                            string matierePath = pathToCreate + "/" + matiere;
 
                         //Verification si le dossier existe deja 
                             if (!Directory.Exists(matierePath))
@@ -212,56 +231,47 @@ namespace v2
                                 
                                 //creation du dossier matiere correspondant
                                 Directory.CreateDirectory(matierePath);
-
-
-
-
+                                AddPDF(fileName, pathToCreate);
 
                             }
-                            else {
+                            else {} } } else{} } else {}
+                        
+        }
 
-                            MessageBox.Show("The type of the selected file is not supported by this application. You must select an XML file.",
-                   "Invalid File Type",
-                   MessageBoxButtons.OK,
-                   MessageBoxIcon.Error);
-
-                        }
-
-
-                        }
-
-                    }
-
-                    else
-                    {
-
-                    MessageBox.Show("The type of the selected file is not supported by this application. You must select an XML file.",
-                   "Invalid File Type",
-                   MessageBoxButtons.OK,
-                   MessageBoxIcon.Error);
-
-                }
+        private void AddPDF(string filename, string pathToTarget)
+        {
+            //connect to NAS
+            Utilities.Network.NetworkDrive network = new Utilities.Network.NetworkDrive();
+            string server = "192.168.1.168";
+            string path = @"Server_NAS\image seiko\Leroy Merlin";
+            string username = "imagine";
+            string password = "imagine";
+            network.MapNetworkDrive(@"\\" + server + @"\" + path , "Z:" , username, password);
 
 
+            XElement fileXML = XMLExplorer(filename);
 
+            List<XElement> xElements = XMLExplorer(filename).Descendants("produit").ToList();
 
-                }
+            foreach(XElement item in xElements)
+            {
 
-                else {
-
-                MessageBox.Show("The type of the selected file is not supported by this application. You must select an XML file.",
-                       "Invalid File Type",
-                       MessageBoxButtons.OK,
-                       MessageBoxIcon.Error);
-            }
 
 
             }
 
-          
+
+
+
+            //TODO COPY PASTE 
+
+
 
 
         }
+
+     
+    }
 
 
 

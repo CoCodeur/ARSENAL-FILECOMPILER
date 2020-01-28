@@ -42,7 +42,7 @@ namespace v2
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Verdana", 8.25F);
-            this.button1.Location = new System.Drawing.Point(74, 51);
+            this.button1.Location = new System.Drawing.Point(74, 149);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(218, 50);
             this.button1.TabIndex = 0;
@@ -52,7 +52,7 @@ namespace v2
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(74, 179);
+            this.textBox1.Location = new System.Drawing.Point(74, 225);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(218, 20);
@@ -60,7 +60,7 @@ namespace v2
             // 
             // PathButon
             // 
-            this.PathButon.Location = new System.Drawing.Point(419, 51);
+            this.PathButon.Location = new System.Drawing.Point(419, 75);
             this.PathButon.Name = "PathButon";
             this.PathButon.Size = new System.Drawing.Size(222, 50);
             this.PathButon.TabIndex = 2;
@@ -70,7 +70,7 @@ namespace v2
             // 
             // PathTxt
             // 
-            this.PathTxt.Location = new System.Drawing.Point(419, 179);
+            this.PathTxt.Location = new System.Drawing.Point(419, 225);
             this.PathTxt.Name = "PathTxt";
             this.PathTxt.ReadOnly = true;
             this.PathTxt.Size = new System.Drawing.Size(222, 20);
@@ -88,9 +88,9 @@ namespace v2
             // 
             // createFolder
             // 
-            this.createFolder.Location = new System.Drawing.Point(419, 123);
+            this.createFolder.Location = new System.Drawing.Point(419, 149);
             this.createFolder.Name = "createFolder";
-            this.createFolder.Size = new System.Drawing.Size(222, 34);
+            this.createFolder.Size = new System.Drawing.Size(222, 50);
             this.createFolder.TabIndex = 5;
             this.createFolder.Text = "Créer un dossier automatiquement dans le Disque C:/\r\n";
             this.createFolder.UseVisualStyleBackColor = true;
