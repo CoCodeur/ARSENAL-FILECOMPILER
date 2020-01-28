@@ -19,7 +19,33 @@ namespace v2
         public Form1()
         {
             InitializeComponent();
+
+          
         }
+
+        
+        private void createFolder_Click(object sender, EventArgs e)
+        {
+
+            string pathOfFolder = @"c:\FileCompiler";
+
+            if (!Directory.Exists(pathOfFolder))
+            {
+                Directory.CreateDirectory(pathOfFolder);
+            }  
+
+            else
+            {
+
+                MessageBox.Show("The type of the selected file is not supported by this application. You must select an XML file.",
+                       "Invalid File Type",
+                       MessageBoxButtons.OK,
+                       MessageBoxIcon.Error);
+            }
+        }
+
+
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -35,6 +61,10 @@ namespace v2
             {
 
                 SetText(dialog.FileName, textBox1);
+
+                
+
+
                 getId(dialog.FileName);
 
                   
@@ -58,13 +88,40 @@ namespace v2
             else { }
         }
 
+        private void LunchButton_Click(object sender, EventArgs e)
+        {
+
+
+        }
+
 
         private void button2_Click(object sender, EventArgs e)
         {
 
-            OpenFileDialog pathDialog = new OpenFileDialog();
-            SetText(pathDialog.FileName, PathTxt);
+
+            FolderBrowserDialog browserDialog = new FolderBrowserDialog();
             
+
+            if (Directory.Exists(@"c:\FileCompiler"))
+            {
+
+                browserDialog.SelectedPath = @"c:\FileCompiler";
+            }
+
+            else
+            {
+
+                browserDialog.ShowDialog();
+                
+
+            }
+           
+
+
+            SetText(browserDialog.SelectedPath, PathTxt);
+
+
+
 
         }
 
@@ -113,8 +170,26 @@ namespace v2
             return xmlStr;
         }
 
-    
-       
+        private void TreeCreatorXML(string fileName)
+        {
+
+           string idRacineFolder = getId(fileName);
+
+            if(idRacineFolder != null)
+            {
+
+
+
+
+
+            }
+
+            else{}
+
+
+        }
+
+        
     }
 
      

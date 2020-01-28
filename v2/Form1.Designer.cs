@@ -35,12 +35,14 @@ namespace v2
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.PathButon = new System.Windows.Forms.Button();
             this.PathTxt = new System.Windows.Forms.TextBox();
+            this.LunchButton = new System.Windows.Forms.Button();
+            this.createFolder = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Verdana", 8.25F);
-            this.button1.Location = new System.Drawing.Point(22, 51);
+            this.button1.Location = new System.Drawing.Point(74, 51);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(218, 50);
             this.button1.TabIndex = 0;
@@ -50,7 +52,7 @@ namespace v2
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(22, 130);
+            this.textBox1.Location = new System.Drawing.Point(74, 179);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(218, 20);
@@ -68,17 +70,39 @@ namespace v2
             // 
             // PathTxt
             // 
-            this.PathTxt.Location = new System.Drawing.Point(419, 129);
+            this.PathTxt.Location = new System.Drawing.Point(419, 179);
             this.PathTxt.Name = "PathTxt";
             this.PathTxt.ReadOnly = true;
             this.PathTxt.Size = new System.Drawing.Size(222, 20);
             this.PathTxt.TabIndex = 3;
+            // 
+            // LunchButton
+            // 
+            this.LunchButton.Location = new System.Drawing.Point(275, 282);
+            this.LunchButton.Name = "LunchButton";
+            this.LunchButton.Size = new System.Drawing.Size(155, 59);
+            this.LunchButton.TabIndex = 4;
+            this.LunchButton.Text = "Lancer la Compilation";
+            this.LunchButton.UseVisualStyleBackColor = true;
+            this.LunchButton.Click += new System.EventHandler(this.LunchButton_Click);
+            // 
+            // createFolder
+            // 
+            this.createFolder.Location = new System.Drawing.Point(419, 123);
+            this.createFolder.Name = "createFolder";
+            this.createFolder.Size = new System.Drawing.Size(222, 34);
+            this.createFolder.TabIndex = 5;
+            this.createFolder.Text = "Créer un dossier automatiquement dans le Disque C:/\r\n";
+            this.createFolder.UseVisualStyleBackColor = true;
+            this.createFolder.Click += new System.EventHandler(this.createFolder_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 478);
+            this.Controls.Add(this.createFolder);
+            this.Controls.Add(this.LunchButton);
             this.Controls.Add(this.PathTxt);
             this.Controls.Add(this.PathButon);
             this.Controls.Add(this.textBox1);
@@ -106,6 +130,8 @@ namespace v2
         private TextBox textBox1;
         private Button PathButon;
         private TextBox PathTxt;
+        private Button LunchButton;
+        private Button createFolder;
     }
 }
 
