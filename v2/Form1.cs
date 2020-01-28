@@ -35,7 +35,7 @@ namespace v2
             {
 
                 SetText(dialog.FileName, textBox1);
-                XmlCopileur(dialog.FileName);
+                getId(dialog.FileName);
 
                   
 
@@ -51,7 +51,7 @@ namespace v2
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
 
-                //TODO LOL 
+             
 
 
                 }
@@ -69,24 +69,31 @@ namespace v2
         }
 
 
+        //Method for set text in a textbox
         private void SetText(string fileName, TextBox textBox)
         {
             textBox.Text = fileName;
         }
 
 
-        private void XmlCopileur(string filename)
-        {
-            var xmlStr = File.ReadAllText(filename);
 
-            var str = XElement.Parse(xmlStr);
+        //Method for get ID of the command
+        private dynamic getId(string filename)
+        {
+           var str = XMLExplorer(filename);
             var id = str.FirstAttribute;
 
-            string paretnFileName = id.ToString();
+            string parentFileName = id.ToString();
+            parentFileName = CleanerID(parentFileName);
 
-            SetText(CleanerID(paretnFileName),PathTxt);
+            return parentFileName;
+          
+
+
+           
         }
 
+        //Method for clean the current ID
 
         private string CleanerID(string parentFileName)
         {
@@ -97,6 +104,16 @@ namespace v2
                return CleanStr;
         }
 
+        //Method for Search XML File and extract in String 
+        private XElement XMLExplorer(string filename)
+        {
+            var xmlFile = File.ReadAllText(filename);
+            var xmlStr = XElement.Parse(xmlFile);
+
+            return xmlStr;
+        }
+
+    
        
     }
 
