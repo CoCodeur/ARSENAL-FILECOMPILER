@@ -175,6 +175,7 @@ namespace v2
         private void TreeCreatorXML(string fileName)
         {
 
+            XElement fileXML = XMLExplorer(fileName);
            string idRacineFolder = getId(fileName);
 
             if(idRacineFolder != null)
@@ -186,14 +187,36 @@ namespace v2
                 if (Directory.Exists(pathToCreate))
                 {
 
-                    Console.WriteLine("C'est cool ");
+                  List<XElement> xElements = fileXML.Descendants("produit")
+                        .Elements("matiere").ToList();
+
+                    foreach (XElement element in xElements)
+                    {
+                        string matiere = element.Value.ToString();
+                        string matierePath = pathToCreate + "/" + matiere;
+
+
+                        if (!Directory.Exists(matierePath))
+                        {
+
+                            Directory.CreateDirectory(matierePath);
+
+                            
+
+
+
+                        }
+                        else {}
+                       
+
+                    }
 
                 }
 
                 else
                 {
 
-                    Console.WriteLine("Ca marche pas ");
+           
 
                 }
 
