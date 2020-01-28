@@ -91,6 +91,8 @@ namespace v2
         private void LunchButton_Click(object sender, EventArgs e)
         {
 
+            TreeCreatorXML(textBox1.Text);
+
 
         }
 
@@ -178,6 +180,22 @@ namespace v2
             if(idRacineFolder != null)
             {
 
+                string pathToCreate = PathTxt.Text + "/" + idRacineFolder;
+                Directory.CreateDirectory(pathToCreate);
+
+                if (Directory.Exists(pathToCreate))
+                {
+
+                    Console.WriteLine("C'est cool ");
+
+                }
+
+                else
+                {
+
+                    Console.WriteLine("Ca marche pas ");
+
+                }
 
 
 
