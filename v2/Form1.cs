@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
 using Utilities.Network;
+using System.Configuration;
 
 namespace v2
 {
@@ -181,10 +182,10 @@ namespace v2
 
             List<string> elementBaliseStr = new List<string> { };
 
-            foreach(XElement element in elementBalise)
+            foreach (XElement element in elementBalise)
             {
                 elementBaliseStr.Add(element.Value.ToString());
-                
+
 
             }
 
@@ -198,16 +199,27 @@ namespace v2
             //recuperation du XML et de Son ID 
             XElement fileXML = XMLExplorer(fileName);
             string idRacineFolder = getId(fileName);
-           
 
-            
+                 //connect to NAS
+                Utilities.Network.NetworkDrive network = new Utilities.Network.NetworkDrive();
 
-                //verification si son ID est null ou pas 
-                if (idRacineFolder != null)
+                network.MapNetworkDrive(@"\\" + ConfigurationManager.AppSettings["server"] + @"\" + ConfigurationManager.AppSettings["path"],
+                    ConfigurationManager.AppSettings["drive"],
+                    ConfigurationManager.AppSettings["username"],
+                    ConfigurationManager.AppSettings["password"]);
+
+
+
+
+            //verification si son ID est null ou pas 
+            if (idRacineFolder != null)
+            {
+
+                //Creation du dossier avec l'id de commande
+                string pathToCreate = Path.Combine(PathTxt.Text, idRacineFolder);
+
+                if (!Directory.Exists(pathToCreate))
                 {
-                    
-                    //Creation du dossier avec l'id de commande
-                    string pathToCreate = PathTxt.Text + "/" + idRacineFolder;
                     Directory.CreateDirectory(pathToCreate);
 
                     //verification si il existe bien un Dossier avec l'ID
@@ -216,66 +228,142 @@ namespace v2
 
                         List<string> matiere = SearchTag("matiere", fileName);
 
-                    
-                        foreach(string matiereInList in matiere)
-                    {
 
-                        string matierePath = pathToCreate + "/" + matiereInList;
-                    
+                        foreach (string matiereInList in matiere)
+                        {
 
+                            string matierePath = Path.Combine(pathToCreate, matiereInList);
 
 
-                        //Verification si le dossier existe deja 
+
+
+
+                            //Verification si le dossier existe deja 
                             if (!Directory.Exists(matierePath))
                             {
-                                
+
                                 //creation du dossier matiere correspondant
                                 Directory.CreateDirectory(matierePath);
                                 AddPDF(fileName, pathToCreate);
 
                             }
-                            else {} } } else{} } else {}
-                        
-        }
+                            else { }
+                        }
+                    }
+                    else { }
+                }
+                else {
+                    DialogResult fenetreFichierExistant = MessageBox.Show("Il existe déjà un dossier du même nom, le supprimer et remplacer ?",
+                        "The Question",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question,
+                        MessageBoxDefaultButton.Button2);
 
-        private void AddPDF(string filename, string pathToTarget)
-        {
-            //connect to NAS
-            Utilities.Network.NetworkDrive network = new Utilities.Network.NetworkDrive();
-            string server = "192.168.1.168";
-            string path = @"Server_NAS\image seiko\Leroy Merlin";
-            string username = "imagine";
-            string password = "imagine";
-            network.MapNetworkDrive(@"\\" + server + @"\" + path , "Z:" , username, password);
+                    if (fenetreFichierExistant == DialogResult.Yes) {
+
+                        DeleteDirectory(pathToCreate);
+
+                        Directory.CreateDirectory(pathToCreate);
+
+                        //verification si il existe bien un Dossier avec l'ID
+                        if (Directory.Exists(pathToCreate))
+                        {
+
+                            List<string> matiere = SearchTag("matiere", fileName);
 
 
-            XElement fileXML = XMLExplorer(filename);
-
-            List<XElement> xElements = XMLExplorer(filename).Descendants("produit").ToList();
-
-            foreach(XElement item in xElements)
-            {
+                            foreach (string matiereInList in matiere)
+                            {
 
 
+                                string matierePath = Path.Combine(pathToCreate, matiereInList);
+
+
+
+
+
+                                //Verification si le dossier existe deja 
+                                if (!Directory.Exists(matierePath))
+                                {
+
+                                    //creation du dossier matiere correspondant
+                                    Directory.CreateDirectory(matierePath);
+                                    AddPDF(fileName, pathToCreate);
+
+                                }
+                                else { }
+                            }
+                        }
+                        else { }
+
+
+                    }
+
+
+                    else if(fenetreFichierExistant == DialogResult.No) {
+                    
+                    
+                    
+                    }
+
+                    
+
+                }
+            } else { }
 
             }
 
+            private void AddPDF(string filename, string pathToTarget)
+            {
+                //connect to NAS
+                Utilities.Network.NetworkDrive network = new Utilities.Network.NetworkDrive();
+
+                network.MapNetworkDrive(@"\\" + ConfigurationManager.AppSettings["server"] + @"\" + ConfigurationManager.AppSettings["path"],
+                    ConfigurationManager.AppSettings["drive"],
+                    ConfigurationManager.AppSettings["username"],
+                    ConfigurationManager.AppSettings["password"]);
+    
+                    List<XElement> xElements = XMLExplorer(filename).Elements("produit").ToList();
+
+                    
+ 
+                    
+                    
+                   
+            
+             }
 
 
 
-            //TODO COPY PASTE 
+            private void DeleteDirectory(string target_dir)
+        {
+            string[] files = Directory.GetFiles(target_dir);
+            string[] dirs = Directory.GetDirectories(target_dir);
 
+            foreach (string file in files)
+            {
+                File.SetAttributes(file, FileAttributes.Normal);
+                File.Delete(file);
+            }
 
+            foreach (string dir in dirs)
+            {
+                DeleteDirectory(dir);
+            }
 
-
+            Directory.Delete(target_dir, false);
         }
 
-     
-    }
-
-
-
 
     }
+
+
+
+    }
+
+    
+
+
+    
 
 

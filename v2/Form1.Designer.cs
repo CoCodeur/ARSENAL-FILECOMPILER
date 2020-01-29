@@ -37,12 +37,13 @@ namespace v2
             this.PathTxt = new System.Windows.Forms.TextBox();
             this.LunchButton = new System.Windows.Forms.Button();
             this.createFolder = new System.Windows.Forms.Button();
+            this.logTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Verdana", 8.25F);
-            this.button1.Location = new System.Drawing.Point(74, 149);
+            this.button1.Location = new System.Drawing.Point(74, 75);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(218, 50);
             this.button1.TabIndex = 0;
@@ -78,7 +79,7 @@ namespace v2
             // 
             // LunchButton
             // 
-            this.LunchButton.Location = new System.Drawing.Point(275, 282);
+            this.LunchButton.Location = new System.Drawing.Point(287, 283);
             this.LunchButton.Name = "LunchButton";
             this.LunchButton.Size = new System.Drawing.Size(155, 59);
             this.LunchButton.TabIndex = 4;
@@ -96,11 +97,19 @@ namespace v2
             this.createFolder.UseVisualStyleBackColor = true;
             this.createFolder.Click += new System.EventHandler(this.createFolder_Click);
             // 
+            // logTextBox
+            // 
+            this.logTextBox.Location = new System.Drawing.Point(103, 370);
+            this.logTextBox.Name = "logTextBox";
+            this.logTextBox.Size = new System.Drawing.Size(523, 20);
+            this.logTextBox.TabIndex = 6;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 478);
+            this.ClientSize = new System.Drawing.Size(1584, 861);
+            this.Controls.Add(this.logTextBox);
             this.Controls.Add(this.createFolder);
             this.Controls.Add(this.LunchButton);
             this.Controls.Add(this.PathTxt);
@@ -132,6 +141,7 @@ namespace v2
         private TextBox PathTxt;
         private Button LunchButton;
         private Button createFolder;
+        private TextBox logTextBox;
     }
 }
 
