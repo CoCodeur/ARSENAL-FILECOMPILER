@@ -16,9 +16,9 @@ using System.Configuration;
 
 namespace v2
 {
-    public partial class Form1 : Form
+    public partial class FileCompiler : Form
     {
-        public Form1()
+        public FileCompiler()
         {
             InitializeComponent();
 
@@ -92,8 +92,9 @@ namespace v2
 
         private void LunchButton_Click(object sender, EventArgs e)
         {
-
+            logTextBox.Text = null;
             TreeCreatorXML(textBox1.Text);
+            
 
 
         }
@@ -200,14 +201,7 @@ namespace v2
             XElement fileXML = XMLExplorer(fileName);
             string idRacineFolder = getId(fileName);
 
-                 //connect to NAS
-                Utilities.Network.NetworkDrive network = new Utilities.Network.NetworkDrive();
-
-                network.MapNetworkDrive(@"\\" + ConfigurationManager.AppSettings["server"] + @"\" + ConfigurationManager.AppSettings["path"],
-                    ConfigurationManager.AppSettings["drive"],
-                    ConfigurationManager.AppSettings["username"],
-                    ConfigurationManager.AppSettings["password"]);
-
+               
 
 
 
@@ -244,11 +238,13 @@ namespace v2
 
                                 //creation du dossier matiere correspondant
                                 Directory.CreateDirectory(matierePath);
-                                AddPDF(fileName, pathToCreate);
+                                
 
                             }
                             else { }
                         }
+
+                                AddPDF(fileName, pathToCreate);
                     }
                     else { }
                 }
@@ -288,11 +284,13 @@ namespace v2
 
                                     //creation du dossier matiere correspondant
                                     Directory.CreateDirectory(matierePath);
-                                    AddPDF(fileName, pathToCreate);
+                                   
 
                                 }
                                 else { }
                             }
+
+                            AddPDF(fileName, pathToCreate);
                         }
                         else { }
 
@@ -309,30 +307,108 @@ namespace v2
                     
 
                 }
-            } else { }
+            } else {
+
+                Console.WriteLine("pas d'ID détécté");
+            
+            }
 
             }
 
-            private void AddPDF(string filename, string pathToTarget)
-            {
-                //connect to NAS
-                Utilities.Network.NetworkDrive network = new Utilities.Network.NetworkDrive();
+        private void AddPDF(string filename, string pathToTarget)
+        {
+            //connect to NAS
+            Utilities.Network.NetworkDrive network = new Utilities.Network.NetworkDrive();
 
-                network.MapNetworkDrive(@"\\" + ConfigurationManager.AppSettings["server"] + @"\" + ConfigurationManager.AppSettings["path"],
-                    ConfigurationManager.AppSettings["drive"],
-                    ConfigurationManager.AppSettings["username"],
-                    ConfigurationManager.AppSettings["password"]);
-    
-                    List<XElement> xElements = XMLExplorer(filename).Elements("produit").ToList();
+            network.MapNetworkDrive(@"\\" + ConfigurationManager.AppSettings["server"] + @"\" + ConfigurationManager.AppSettings["path"],
+                ConfigurationManager.AppSettings["drive"],
+                ConfigurationManager.AppSettings["username"],
+                ConfigurationManager.AppSettings["password"]);
 
-                    
- 
-                    
-                    
-                   
+            List<XElement> xElements = XMLExplorer(filename).Elements("produit").ToList();
+
+            string IdCommande = CleanerID(getId(filename));
+
+            int indexFileFound = 0;
+            int indexFolderFound = 0;
+            int indexFolderNotFound = 0;
+            int indexFileFoundAndCopy = 0;
+
             
-             }
 
+
+            foreach (XElement element in xElements)
+            {
+
+
+
+                string targetToCopy = ConfigurationManager.AppSettings["drive"] + element.Element("categorie").Value.ToString().Replace(" / ", @"\");
+                DirectoryInfo directoryToCopy = new DirectoryInfo(targetToCopy);
+
+               
+
+                if (!Directory.Exists(targetToCopy))
+                {
+
+                    indexFolderNotFound++;
+                }
+
+                else
+                {
+
+                    string nomFichier = element.Element("reference").Value.ToString();
+
+
+
+                    //foreach (var file in directoryToCopy.GetFiles("*" + nomFichier + "*"))
+                    //{
+
+                    //    indexFileFound++;
+
+
+
+
+                    //    File.Copy(Path.Combine(directoryToCopy.ToString(), file.Name), Path.Combine(pathToTarget, element.Element("matiere").Value.ToString(), file.Name));
+
+
+
+
+                    //    indexFileFoundAndCopy++;
+                    //}
+
+
+
+
+
+
+
+
+
+                    indexFolderFound++;
+
+                   // Console.WriteLine(targetToCopy);
+                }
+
+
+
+
+
+
+
+            }
+
+            
+
+            logTextBox.Text += indexFolderFound.ToString() + " Dossier(s) trouvé(s)  dont :  ";
+            logTextBox.Text += indexFileFound.ToString() + " fichier(s) trouvé(s)  dont :   ";
+            logTextBox.Text += indexFileFoundAndCopy.ToString() + " fichier(s) copié(s) ";
+            logTextBox.Text += xElements.Count - indexFileFound + " fichier(s) non trouvé(s) ";
+            logTextBox.Text += indexFolderNotFound.ToString() + " dossier(s) non trouvé(s)   ";
+         
+        }
+
+
+           
 
 
             private void DeleteDirectory(string target_dir)
@@ -355,6 +431,55 @@ namespace v2
         }
 
 
+
+        private void Clear_Click(object sender, EventArgs e)
+        {
+
+            string dirToClear = PathTxt.Text;
+            System.IO.DirectoryInfo directoryInfo = new DirectoryInfo(dirToClear);
+
+            if(String.IsNullOrEmpty(dirToClear))
+            {
+
+                MessageBox.Show("Vous avez selectionner aucun repertoire à vider",
+                    "Error",
+                  MessageBoxButtons.OK,
+                  MessageBoxIcon.Error);
+
+            }
+
+            else
+            {
+
+                DialogResult confirmation = MessageBox.Show("Etes vous sûr de vouloir vider ce dossier ?",
+                "Confirmation",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+                if(confirmation == DialogResult.Yes)
+                {
+                        
+                    foreach(FileInfo file in directoryInfo.GetFiles())
+                    {
+                        file.Delete();
+                    }
+
+                    foreach(DirectoryInfo directory in directoryInfo.GetDirectories())
+                    {
+
+                        directory.Delete(true);
+                    }
+}
+
+                else
+                {
+
+                }
+               
+                
+            }
+
+        }
     }
 
 

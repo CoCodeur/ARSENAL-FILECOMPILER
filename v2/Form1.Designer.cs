@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace v2
 {
-    partial class Form1
+    partial class FileCompiler
     {
         /// <summary>
         /// Variable nécessaire au concepteur.
@@ -31,6 +31,7 @@ namespace v2
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FileCompiler));
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.PathButon = new System.Windows.Forms.Button();
@@ -38,6 +39,8 @@ namespace v2
             this.LunchButton = new System.Windows.Forms.Button();
             this.createFolder = new System.Windows.Forms.Button();
             this.logTextBox = new System.Windows.Forms.TextBox();
+            this.Clear = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // button1
@@ -100,15 +103,39 @@ namespace v2
             // logTextBox
             // 
             this.logTextBox.Location = new System.Drawing.Point(103, 370);
+            this.logTextBox.Multiline = true;
             this.logTextBox.Name = "logTextBox";
-            this.logTextBox.Size = new System.Drawing.Size(523, 20);
+            this.logTextBox.Size = new System.Drawing.Size(523, 200);
             this.logTextBox.TabIndex = 6;
+            this.logTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // Form1
+            // Clear
+            // 
+            this.Clear.Location = new System.Drawing.Point(597, 642);
+            this.Clear.Name = "Clear";
+            this.Clear.Size = new System.Drawing.Size(125, 57);
+            this.Clear.TabIndex = 7;
+            this.Clear.Text = "Clear le Dossier";
+            this.Clear.UseVisualStyleBackColor = true;
+            this.Clear.Click += new System.EventHandler(this.Clear_Click);
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(27, 677);
+            this.progressBar1.Maximum = 1000;
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(342, 22);
+            this.progressBar1.Step = 1;
+            this.progressBar1.TabIndex = 8;
+            // 
+            // FileCompiler
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1584, 861);
+            this.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.ClientSize = new System.Drawing.Size(734, 711);
+            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.Clear);
             this.Controls.Add(this.logTextBox);
             this.Controls.Add(this.createFolder);
             this.Controls.Add(this.LunchButton);
@@ -116,8 +143,10 @@ namespace v2
             this.Controls.Add(this.PathButon);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button1);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "FileCompiler";
+            this.Text = "FileCompiler";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -142,6 +171,8 @@ namespace v2
         private Button LunchButton;
         private Button createFolder;
         private TextBox logTextBox;
+        private Button Clear;
+        private ProgressBar progressBar1;
     }
 }
 
