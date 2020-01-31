@@ -13,6 +13,8 @@ using System.Xml;
 using System.Xml.Linq;
 using Utilities.Network;
 using System.Configuration;
+using Microsoft.VisualBasic.CompilerServices;
+using System.Text.RegularExpressions;
 
 namespace v2
 {
@@ -39,8 +41,8 @@ namespace v2
             else
             {
 
-                MessageBox.Show("The type of the selected file is not supported by this application. You must select an XML file.",
-                       "Invalid File Type",
+                MessageBox.Show("Le dossier " + pathOfFolder + " existe déjà sur votre ordinateur",
+                       "Dossier existe déjà",
                        MessageBoxButtons.OK,
                        MessageBoxIcon.Error);
             }
@@ -69,7 +71,7 @@ namespace v2
 
                 getId(dialog.FileName);
 
-
+                
 
             }
             if (!string.Equals(Path.GetExtension(dialog.FileName),
@@ -78,8 +80,8 @@ namespace v2
                 ))
             {
 
-                MessageBox.Show("The type of the selected file is not supported by this application. You must select an XML file.",
-                    "Invalid File Type",
+                MessageBox.Show("Le type de fichier que vous avez choisis n'est pas correct. Veuillez choisir un fichier XML",
+                    "Type de fichier invalide",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
 
@@ -231,7 +233,7 @@ namespace v2
                         List<string> matiere = SearchTag("matiere", fileName);
 
 
-                        foreach (string matiereInList in matiere)
+                        Parallel.ForEach (matiere, matiereInList => 
                         {
 
                             string matierePath = Path.Combine(pathToCreate, matiereInList);
@@ -250,7 +252,7 @@ namespace v2
 
                             }
                             else { }
-                        }
+                        });
 
                                 AddPDF(fileName, pathToCreate);
                     }
@@ -276,7 +278,7 @@ namespace v2
                             List<string> matiere = SearchTag("matiere", fileName);
 
 
-                            foreach (string matiereInList in matiere)
+                            Parallel.ForEach (  matiere, matiereInList =>
                             {
 
 
@@ -296,7 +298,7 @@ namespace v2
 
                                 }
                                 else { }
-                            }
+                            });
 
                             AddPDF(fileName, pathToCreate);
                         }
@@ -338,18 +340,23 @@ namespace v2
             int indexFolderNotFound = 0;
             int indexFileFoundAndCopy = 0;
 
-            
+
+            List<string> elementTrouve = new List<string> { };
+            List<string> elementDeBase = new List<string> { };
+        
 
 
-            foreach (XElement element in xElements)
+
+            Parallel.ForEach (xElements, element =>
+
             {
 
-
+               
 
                 string targetToCopy = ConfigurationManager.AppSettings["drive"] + element.Element("categorie").Value.ToString().Replace(" / ", @"\");
                 DirectoryInfo directoryToCopy = new DirectoryInfo(targetToCopy);
 
-               
+                elementDeBase.Add(Path.Combine(targetToCopy, element.Element("reference").Value.ToString()));
 
                 if (!Directory.Exists(targetToCopy))
                 {
@@ -364,8 +371,12 @@ namespace v2
 
 
 
-                    foreach (var file in directoryToCopy.GetFiles("*" + nomFichier + "*"))
+                   
+
+                    Parallel.ForEach (directoryToCopy.GetFiles("*" + nomFichier + "*"),  file =>
                     {
+
+                        elementTrouve.Add(Path.Combine(targetToCopy,nomFichier));
 
                         indexFileFound++;
 
@@ -375,11 +386,11 @@ namespace v2
                         if (nombreInpression != 1)
                         {
 
-                            int indexCopy = 1;
+                            int indexCopy = 0;
 
                             while (indexCopy != nombreInpression)
                             {
-                                File.Copy(Path.Combine(directoryToCopy.ToString(), file.Name), Path.Combine(pathToTarget, element.Element("matiere").Value.ToString(), "(" + indexCopy + ")" + file.Name), false);
+                                File.Copy(Path.Combine(directoryToCopy.ToString(), file.Name), Path.Combine(pathToTarget, element.Element("matiere").Value.ToString(),   file + indexCopy.ToString() + file.Extension), false);
                                 indexCopy++;
                                 indexFileFoundAndCopy++;
                             }
@@ -395,22 +406,29 @@ namespace v2
                         }
 
 
-
-                        
                     }
+                        
+                    );
+
+
+
+
+                   
+
+
 
 
 
                     indexFolderFound++;
 
-                   // Console.WriteLine(targetToCopy);
                 }
 
 
 
-            }
+            });
 
-            
+
+            LogCreator(elementTrouve, elementDeBase ,IdCommande);
 
             logTextBox.Text += indexFolderFound.ToString() + " Dossier(s) trouvé(s)  dont :  ";
             logTextBox.Text += indexFileFound.ToString() + " fichier(s) trouvé(s)  dont :   ";
@@ -493,6 +511,36 @@ namespace v2
             }
 
         }
+
+
+        private void LogCreator(List<string> elementTrouve, List<string> elementBase, string idCommande)
+        {
+            var result = elementBase.Except(elementTrouve);
+            string txtLogPath = Path.Combine(PathTxt.Text,idCommande , "Log.txt");
+
+            using(StreamWriter sw = File.CreateText(txtLogPath))
+            {
+
+                foreach (string notFound in result)
+                {
+
+                    sw.WriteLine(notFound + " not found ");
+
+                }
+
+
+            }
+
+
+            
+
+
+
+        }
+
+       
+
+
     }
 
 
