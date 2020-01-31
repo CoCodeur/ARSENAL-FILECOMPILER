@@ -40,7 +40,6 @@ namespace v2
             this.createFolder = new System.Windows.Forms.Button();
             this.logTextBox = new System.Windows.Forms.TextBox();
             this.Clear = new System.Windows.Forms.Button();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // button1
@@ -119,22 +118,12 @@ namespace v2
             this.Clear.UseVisualStyleBackColor = true;
             this.Clear.Click += new System.EventHandler(this.Clear_Click);
             // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(27, 677);
-            this.progressBar1.Maximum = 1000;
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(342, 22);
-            this.progressBar1.Step = 1;
-            this.progressBar1.TabIndex = 8;
-            // 
             // FileCompiler
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(734, 711);
-            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.Clear);
             this.Controls.Add(this.logTextBox);
             this.Controls.Add(this.createFolder);
@@ -172,7 +161,6 @@ namespace v2
         private Button createFolder;
         private TextBox logTextBox;
         private Button Clear;
-        private ProgressBar progressBar1;
     }
 }
 

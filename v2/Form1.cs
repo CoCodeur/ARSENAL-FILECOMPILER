@@ -201,12 +201,20 @@ namespace v2
             XElement fileXML = XMLExplorer(fileName);
             string idRacineFolder = getId(fileName);
 
-               
 
+            if (String.IsNullOrEmpty(idRacineFolder))
+            {
+
+                MessageBox.Show("Id inexistant dans votre fichier XML",
+                    "No ID found",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+            }
 
 
             //verification si son ID est null ou pas 
-            if (idRacineFolder != null)
+            else
             {
 
                 //Creation du dossier avec l'id de commande
@@ -307,10 +315,6 @@ namespace v2
                     
 
                 }
-            } else {
-
-                Console.WriteLine("pas d'ID détécté");
-            
             }
 
             }
@@ -360,27 +364,40 @@ namespace v2
 
 
 
-                    //foreach (var file in directoryToCopy.GetFiles("*" + nomFichier + "*"))
-                    //{
+                    foreach (var file in directoryToCopy.GetFiles("*" + nomFichier + "*"))
+                    {
 
-                    //    indexFileFound++;
-
-
+                        indexFileFound++;
 
 
-                    //    File.Copy(Path.Combine(directoryToCopy.ToString(), file.Name), Path.Combine(pathToTarget, element.Element("matiere").Value.ToString(), file.Name));
+                        int nombreInpression = Convert.ToInt32(element.Element("quantite").Value.ToString());
+
+                        if (nombreInpression != 1)
+                        {
+
+                            int indexCopy = 1;
+
+                            while (indexCopy != nombreInpression)
+                            {
+                                File.Copy(Path.Combine(directoryToCopy.ToString(), file.Name), Path.Combine(pathToTarget, element.Element("matiere").Value.ToString(), "(" + indexCopy + ")" + file.Name), false);
+                                indexCopy++;
+                                indexFileFoundAndCopy++;
+                            }
+
+                        }
+
+                        else
+                        {
+
+                            File.Copy(Path.Combine(directoryToCopy.ToString(), file.Name), Path.Combine(pathToTarget, element.Element("matiere").Value.ToString(), file.Name), false);
+                            indexFileFoundAndCopy++;
+
+                        }
 
 
 
-
-                    //    indexFileFoundAndCopy++;
-                    //}
-
-
-
-
-
-
+                        
+                    }
 
 
 
@@ -388,10 +405,6 @@ namespace v2
 
                    // Console.WriteLine(targetToCopy);
                 }
-
-
-
-
 
 
 
@@ -436,7 +449,7 @@ namespace v2
         {
 
             string dirToClear = PathTxt.Text;
-            System.IO.DirectoryInfo directoryInfo = new DirectoryInfo(dirToClear);
+           
 
             if(String.IsNullOrEmpty(dirToClear))
             {
@@ -450,7 +463,7 @@ namespace v2
 
             else
             {
-
+                 System.IO.DirectoryInfo directoryInfo = new DirectoryInfo(dirToClear);
                 DialogResult confirmation = MessageBox.Show("Etes vous sûr de vouloir vider ce dossier ?",
                 "Confirmation",
                 MessageBoxButtons.YesNo,

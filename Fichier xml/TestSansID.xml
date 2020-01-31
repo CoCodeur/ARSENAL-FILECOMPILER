@@ -1,21 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<commande id="544868486">
+<commande id="">
 <client>
 <![CDATA[Leroy Merlin Saint Etienne Steel]]></client>
 <adresse><![CDATA[44 rue Emile Zola 42650 Saint jean de bonnefonds]]></adresse>
 <date>2020-01-21 14:51:57</date>
 
-<produit><categorie><![CDATA[Salle de bains / 10-Showroom / 10-05 Imposture fenetre]]></categorie><reference>10-05-05</reference><description><![CDATA[Salle de bains NATURE]]></description><matiere><![CDATA[PVC 3mm plastifié]]></matiere><quantite>20</quantite></produit>
+<produit>
+<categorie><![CDATA[Salle de bains / 10-Showroom / 10-05 Imposture fenetre]]></categorie>
+<reference>10-05-05</reference>
+<description><![CDATA[Salle de bains NATURE]]></description>
+<matiere><![CDATA[PVC 3mm plastifié]]></matiere>
+<quantite>20</quantite>
+</produit>
 
 
-<produit><categorie><![CDATA[Salle de bains / 01-Points d'eau / 01-01 Vasques]]></categorie><reference>01-01-01</reference><description><![CDATA[Segmentation - VASQUE]]></description><matiere><![CDATA[PVC 300microns]]></matiere><quantite>1</quantite></produit>
+<produit>
+<categorie><![CDATA[Salle de bains / 01-Points d'eau / 01-01 Vasques]]></categorie>
+<reference>01-01-01</reference>
+<description><![CDATA[Segmentation - VASQUE]]></description>
+<matiere><![CDATA[PVC 300microns]]></matiere>
+<quantite>1</quantite>
+</produit>
 
-<produit><categorie><![CDATA[Salle de bains / 01-Points d'eau / 01-01 Vasques]]></categorie><reference>01-01-02</reference><description><![CDATA[Segmentation - Bande bleue navy]]></description><matiere><![CDATA[PVC 300microns]]></matiere><quantite>30</quantite></produit>
+<produit>
+<categorie><![CDATA[Salle de bains / 01-Points d'eau / 01-01 Vasques]]></categorie>
+<reference>01-01-02</reference>
+<description><![CDATA[Segmentation - Bande bleue navy]]></description>
+<matiere><![CDATA[PVC 300microns]]></matiere>
+<quantite>30</quantite>
+</produit>
 
 
-<produit><categorie><![CDATA[Salle de bains / 01-Points d'eau / 01-01 Vasques]]></categorie><reference>01-01-03</reference><description><![CDATA[ILV choisir - VASQUE]]></description><matiere><![CDATA[PVC 1mm adhésivé]]></matiere><quantite>1</quantite></produit>
+<produit>
+<categorie><![CDATA[Salle de bains / 01-Points d'eau / 01-01 Vasques]]></categorie>
+<reference>01-01-03</reference>
+<description><![CDATA[ILV choisir - VASQUE]]></description>
+<matiere><![CDATA[PVC 1mm adhésivé]]></matiere>
+<quantite>1</quantite>
+</produit>
 
-<produit><categorie><![CDATA[Salle de bains / 01-Points d'eau / 01-01 Vasques]]></categorie><reference>01-01-04</reference><description><![CDATA[Nous aimons ILV  - Vasque Capsule]]></description><matiere><![CDATA[PVC 3mm adhésivé]]></matiere><quantite>1</quantite></produit>
+<produit>
+<categorie><![CDATA[Salle de bains / 01-Points d'eau / 01-01 Vasques]]></categorie>
+<reference>01-01-04</reference>
+<description><![CDATA[Nous aimons ILV  - Vasque Capsule]]></description>
+<matiere><![CDATA[PVC 3mm adhésivé]]></matiere>
+<quantite>1</quantite>
+</produit>
 
 
 
