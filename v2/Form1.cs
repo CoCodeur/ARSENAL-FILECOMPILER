@@ -15,6 +15,7 @@ using Utilities.Network;
 using System.Configuration;
 using Microsoft.VisualBasic.CompilerServices;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace v2
 {
@@ -47,10 +48,6 @@ namespace v2
                        MessageBoxIcon.Error);
             }
         }
-
-
-
-
         private void button1_Click(object sender, EventArgs e)
         {
 
@@ -66,12 +63,7 @@ namespace v2
 
                 SetText(dialog.FileName, textBox1);
 
-
-
-
                 getId(dialog.FileName);
-
-                
 
             }
             if (!string.Equals(Path.GetExtension(dialog.FileName),
@@ -84,10 +76,6 @@ namespace v2
                     "Type de fichier invalide",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
-
-
-
-
             }
             else { }
         }
@@ -96,7 +84,7 @@ namespace v2
         {
             logTextBox.Text = null;
             TreeCreatorXML(textBox1.Text);
-            
+
 
 
         }
@@ -120,15 +108,8 @@ namespace v2
 
                 browserDialog.ShowDialog();
 
-
             }
-
-
-
             SetText(browserDialog.SelectedPath, PathTxt);
-
-
-
 
         }
 
@@ -138,7 +119,6 @@ namespace v2
         {
             textBox.Text = fileName;
         }
-
 
 
         //Method for get ID of the command
@@ -151,10 +131,6 @@ namespace v2
             parentFileName = CleanerID(parentFileName);
 
             return parentFileName;
-
-
-
-
         }
 
         //Method for clean the current ID
@@ -233,39 +209,37 @@ namespace v2
                         List<string> matiere = SearchTag("matiere", fileName);
 
 
-                        Parallel.ForEach (matiere, matiereInList => 
-                        {
+                        Parallel.ForEach(matiere, matiereInList =>
+                       {
 
-                            string matierePath = Path.Combine(pathToCreate, matiereInList);
-
-
-
-
+                           string matierePath = Path.Combine(pathToCreate, matiereInList);
 
                             //Verification si le dossier existe deja 
                             if (!Directory.Exists(matierePath))
-                            {
+                           {
 
                                 //creation du dossier matiere correspondant
                                 Directory.CreateDirectory(matierePath);
-                                
 
-                            }
-                            else { }
-                        });
 
-                                AddPDF(fileName, pathToCreate);
+                           }
+                           else { }
+                       });
+
+                        AddPDF(fileName, pathToCreate, idRacineFolder);
                     }
                     else { }
                 }
-                else {
+                else
+                {
                     DialogResult fenetreFichierExistant = MessageBox.Show("Il existe déjà un dossier du même nom, le supprimer et remplacer ?",
                         "The Question",
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Question,
                         MessageBoxDefaultButton.Button2);
 
-                    if (fenetreFichierExistant == DialogResult.Yes) {
+                    if (fenetreFichierExistant == DialogResult.Yes)
+                    {
 
                         DeleteDirectory(pathToCreate);
 
@@ -278,29 +252,25 @@ namespace v2
                             List<string> matiere = SearchTag("matiere", fileName);
 
 
-                            Parallel.ForEach (  matiere, matiereInList =>
-                            {
+                            Parallel.ForEach(matiere, matiereInList =>
+                         {
 
 
-                                string matierePath = Path.Combine(pathToCreate, matiereInList);
-
-
-
-
+                             string matierePath = Path.Combine(pathToCreate, matiereInList);
 
                                 //Verification si le dossier existe deja 
                                 if (!Directory.Exists(matierePath))
-                                {
+                             {
 
                                     //creation du dossier matiere correspondant
                                     Directory.CreateDirectory(matierePath);
-                                   
 
-                                }
-                                else { }
-                            });
 
-                            AddPDF(fileName, pathToCreate);
+                             }
+                             else { }
+                         });
+
+                            AddPDF(fileName, pathToCreate, idRacineFolder);
                         }
                         else { }
 
@@ -308,20 +278,21 @@ namespace v2
                     }
 
 
-                    else if(fenetreFichierExistant == DialogResult.No) {
-                    
-                    
-                    
+                    else if (fenetreFichierExistant == DialogResult.No)
+                    {
+
+
+
                     }
 
-                    
+
 
                 }
             }
 
-            }
+        }
 
-        private void AddPDF(string filename, string pathToTarget)
+        private void AddPDF(string filename, string pathToTarget, string idRacineFolder)
         {
             //connect to NAS
             Utilities.Network.NetworkDrive network = new Utilities.Network.NetworkDrive();
@@ -340,22 +311,20 @@ namespace v2
             int indexFolderNotFound = 0;
             int indexFileFoundAndCopy = 0;
 
+            progressBar1.Minimum = 0;
+            progressBar1.Maximum = xElements.Count();
+            int progressBarValue = progressBar1.Value;
 
             List<string> elementTrouve = new List<string> { };
             List<string> elementDeBase = new List<string> { };
-        
 
-
-
-            Parallel.ForEach (xElements, element =>
+            foreach (var element in xElements)
 
             {
 
-               
-
                 string targetToCopy = ConfigurationManager.AppSettings["drive"] + element.Element("categorie").Value.ToString().Replace(" / ", @"\");
-                DirectoryInfo directoryToCopy = new DirectoryInfo(targetToCopy);
 
+                
                 elementDeBase.Add(Path.Combine(targetToCopy, element.Element("reference").Value.ToString()));
 
                 if (!Directory.Exists(targetToCopy))
@@ -369,80 +338,80 @@ namespace v2
 
                     string nomFichier = element.Element("reference").Value.ToString();
 
+                    DirectoryInfo directoryInfo = new DirectoryInfo(targetToCopy);
+
+                    Parallel.ForEach(directoryInfo.GetFiles("*" + nomFichier + "*"), file =>
+                  {
+
+                      elementTrouve.Add(Path.Combine(targetToCopy, nomFichier));
+
+                      indexFileFound++;
 
 
-                   
+                      int nombreInpression = Convert.ToInt32(element.Element("quantite").Value.ToString());
+                      int indexSameFile = 0;
 
-                    Parallel.ForEach (directoryToCopy.GetFiles("*" + nomFichier + "*"),  file =>
-                    {
+                      if (!File.Exists(Path.Combine(pathToTarget, element.Element("matiere").Value.ToString(), file.Name)))
+                      {
 
-                        elementTrouve.Add(Path.Combine(targetToCopy,nomFichier));
+                          if (nombreInpression != 1)
+                          {
 
-                        indexFileFound++;
+                              int indexCopy = 1;
 
+                              while (indexCopy != nombreInpression)
+                              {
+                                  string nomFichierACopier = file.Name;
+                                  File.Copy(Path.Combine(targetToCopy, file.Name), Path.Combine(pathToTarget, element.Element("matiere").Value.ToString(), "(" + indexCopy + ")" + nomFichierACopier + file.Extension), false);
+                                  indexCopy++;
+                                  indexFileFoundAndCopy++;
+                              }
 
-                        int nombreInpression = Convert.ToInt32(element.Element("quantite").Value.ToString());
+                          }
 
-                        if (nombreInpression != 1)
-                        {
+                          else
+                          {
 
-                            int indexCopy = 0;
+                              File.Copy(Path.Combine(targetToCopy, file.Name), Path.Combine(pathToTarget, element.Element("matiere").Value.ToString(), file.Name), false);
+                              indexFileFoundAndCopy++;
 
-                            while (indexCopy != nombreInpression)
-                            {
-                                File.Copy(Path.Combine(directoryToCopy.ToString(), file.Name), Path.Combine(pathToTarget, element.Element("matiere").Value.ToString(),   file + indexCopy.ToString() + file.Extension), false);
-                                indexCopy++;
-                                indexFileFoundAndCopy++;
-                            }
+                          }
 
-                        }
+                          
+                      }
 
-                        else
-                        {
+                      else
+                      {
 
-                            File.Copy(Path.Combine(directoryToCopy.ToString(), file.Name), Path.Combine(pathToTarget, element.Element("matiere").Value.ToString(), file.Name), false);
-                            indexFileFoundAndCopy++;
+                          string nomFichierACopier = "(" + indexSameFile + ")" + file;
+                          File.Copy(Path.Combine(targetToCopy, file.Name), Path.Combine(pathToTarget, element.Element("matiere").Value.ToString(), nomFichierACopier + file.Extension), false);
 
-                        }
-
-
-                    }
-                        
+                      }
+                  }
                     );
-
-
-
-
-                   
-
-
-
-
 
                     indexFolderFound++;
 
                 }
 
+                progressBar1.Value++;
 
+            }
 
-            });
-
-
-            LogCreator(elementTrouve, elementDeBase ,IdCommande);
+             LogCreator(elementTrouve, elementDeBase, idRacineFolder);
 
             logTextBox.Text += indexFolderFound.ToString() + " Dossier(s) trouvé(s)  dont :  ";
             logTextBox.Text += indexFileFound.ToString() + " fichier(s) trouvé(s)  dont :   ";
             logTextBox.Text += indexFileFoundAndCopy.ToString() + " fichier(s) copié(s) ";
-            logTextBox.Text += xElements.Count - indexFileFound + " fichier(s) non trouvé(s) ";
-            logTextBox.Text += indexFolderNotFound.ToString() + " dossier(s) non trouvé(s)   ";
-         
+            logTextBox.Text += Environment.NewLine;
+
+            if (xElements.Count != indexFileFound)
+            {
+
+                logTextBox.Text += "Un ou Des fichiers n'ont pas été trouvés";
+            }
         }
-
-
-           
-
-
-            private void DeleteDirectory(string target_dir)
+        private void DeleteDirectory(string target_dir)
         {
             string[] files = Directory.GetFiles(target_dir);
             string[] dirs = Directory.GetDirectories(target_dir);
@@ -461,15 +430,13 @@ namespace v2
             Directory.Delete(target_dir, false);
         }
 
-
-
         private void Clear_Click(object sender, EventArgs e)
         {
 
             string dirToClear = PathTxt.Text;
-           
 
-            if(String.IsNullOrEmpty(dirToClear))
+
+            if (String.IsNullOrEmpty(dirToClear))
             {
 
                 MessageBox.Show("Vous avez selectionner aucun repertoire à vider",
@@ -478,47 +445,45 @@ namespace v2
                   MessageBoxIcon.Error);
 
             }
-
-            else
+                else
             {
-                 System.IO.DirectoryInfo directoryInfo = new DirectoryInfo(dirToClear);
+                System.IO.DirectoryInfo directoryInfo = new DirectoryInfo(dirToClear);
                 DialogResult confirmation = MessageBox.Show("Etes vous sûr de vouloir vider ce dossier ?",
                 "Confirmation",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Warning);
 
-                if(confirmation == DialogResult.Yes)
+                if (confirmation == DialogResult.Yes)
                 {
-                        
-                    foreach(FileInfo file in directoryInfo.GetFiles())
+
+                    foreach (FileInfo file in directoryInfo.GetFiles())
                     {
                         file.Delete();
                     }
 
-                    foreach(DirectoryInfo directory in directoryInfo.GetDirectories())
+                    foreach (DirectoryInfo directory in directoryInfo.GetDirectories())
                     {
 
                         directory.Delete(true);
                     }
-}
+                }
 
                 else
-                {
-
-                }
-               
-                
+                { }                
             }
-
         }
 
-
-        private void LogCreator(List<string> elementTrouve, List<string> elementBase, string idCommande)
+        private void LogCreator(List<string> elementTrouve, List<string> elementBase, string idRacineFolder)
         {
-            var result = elementBase.Except(elementTrouve);
-            string txtLogPath = Path.Combine(PathTxt.Text,idCommande , "Log.txt");
 
-            using(StreamWriter sw = File.CreateText(txtLogPath))
+            elementBase.Sort();
+            elementTrouve.Sort();
+
+            var result = elementBase.Except(elementTrouve);
+
+            string txtLogPath = Path.Combine(PathTxt.Text, idRacineFolder, "Log.txt");
+
+            using (StreamWriter sw = File.CreateText(txtLogPath))
             {
 
                 foreach (string notFound in result)
@@ -526,30 +491,21 @@ namespace v2
 
                     sw.WriteLine(notFound + " not found ");
 
-                }
+                }}}
 
-
-            }
-
-
-            
-
-
+        private void FileCompiler_Load(object sender, EventArgs e)
+        {
 
         }
-
-       
-
-
     }
 
 
 
-    }
-
-    
+}
 
 
-    
+
+
+
 
 

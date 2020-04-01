@@ -40,6 +40,8 @@ namespace v2
             this.createFolder = new System.Windows.Forms.Button();
             this.logTextBox = new System.Windows.Forms.TextBox();
             this.Clear = new System.Windows.Forms.Button();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // button1
@@ -118,12 +120,25 @@ namespace v2
             this.Clear.UseVisualStyleBackColor = true;
             this.Clear.Click += new System.EventHandler(this.Clear_Click);
             // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.WorkerReportsProgress = true;
+            this.backgroundWorker1.WorkerSupportsCancellation = true;
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(74, 659);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(218, 23);
+            this.progressBar1.TabIndex = 8;
+            // 
             // FileCompiler
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(734, 711);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.Clear);
             this.Controls.Add(this.logTextBox);
             this.Controls.Add(this.createFolder);
@@ -136,6 +151,7 @@ namespace v2
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FileCompiler";
             this.Text = "FileCompiler";
+            this.Load += new System.EventHandler(this.FileCompiler_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -161,6 +177,8 @@ namespace v2
         private Button createFolder;
         private TextBox logTextBox;
         private Button Clear;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private ProgressBar progressBar1;
     }
 }
 
